@@ -10,12 +10,32 @@ function CharactersModuleSync_Fix(peer, d1, d2, d3, d4, d5, d6, d7, d8, d9, ...)
 	elseif _d1 == "lobby_info" then
 		local chara = tostring(d4)
 		if not tweak_data.blackmarket.characters[chara] or tweak_data.blackmarket.characters[chara].custom then
-			d4 = "bodhi"
+			local based_on = tweak_data.blackmarket.characters[chara] and tweak_data.blackmarket.characters[chara].based_on or nil
+			if based_on then
+				for char_name, data in pairs(Global.blackmarket_manager.characters) do
+					if data and not data.equipped and char_name ~= based_on and tweak_data.blackmarket.characters[char_name] and tweak_data.blackmarket.characters[char_name].fps_unit then
+						d4 = char_name
+						break
+					end
+				end
+			else
+				d4 = "bodhi"
+			end
 		end
 	elseif _d1 == "join_request_reply" then
 		local chara = tostring(d9)
 		if not tweak_data.blackmarket.characters[chara] or tweak_data.blackmarket.characters[chara].custom then
-			d9 = "bodhi"
+			local based_on = tweak_data.blackmarket.characters[chara] and tweak_data.blackmarket.characters[chara].based_on or nil
+			if based_on then
+				for char_name, data in pairs(Global.blackmarket_manager.characters) do
+					if data and not data.equipped and char_name ~= based_on and tweak_data.blackmarket.characters[char_name] and tweak_data.blackmarket.characters[char_name].fps_unit then
+						d9 = char_name
+						break
+					end
+				end
+			else
+				d9 = "bodhi"
+			end
 		end
 	end
 	return d1, d2, d3, d4, d5, d6, d7, d8, d9, ...

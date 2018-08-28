@@ -42,6 +42,7 @@ function CharactersModule:RegisterHook()
 			return
 		end
 		bmc_self.characters[self._config.id] = {
+			based_on = self._config.based_on,
 			custom = true,
 			fps_unit = self._config.fps_unit,
 			npc_unit = self._config.npc_unit,
@@ -52,6 +53,7 @@ function CharactersModule:RegisterHook()
 			mask_off_sequence = self._config.mask_off_sequence
 		}
 		bmc_self.characters["ai_"..self._config.id] = {
+			base_on = self._config.based_on,
 			custom = true,
 			npc_unit = self._config.ai_npc_unit,
 			sequence = self._config.sequence,
