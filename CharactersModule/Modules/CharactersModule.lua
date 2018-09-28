@@ -1,7 +1,5 @@
 CharactersModule = CharactersModule or class(ItemModuleBase)
 
-CharactersModule.type_name = "Characters"
-
 function CharactersModule:init(core_mod, config)
 	if not CharactersModule.super.init(self, core_mod, config) then
 		return false
@@ -103,5 +101,3 @@ function CharactersModule:RegisterHook()
 		end
 	end)
 end
-
-BeardLib:RegisterModule(CharactersModule.type_name, CharactersModule)
