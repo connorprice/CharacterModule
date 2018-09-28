@@ -65,10 +65,10 @@ function CharactersModule:RegisterHook()
 			name = self._config.id,
 			order = _characters+1,
 			static_data = {
-				voice = "",
+				voice = self._config.static_data_voice or "",
 				ai_mask_id = self._config.id,
 				ai_character_id = "ai_"..self._config.id,
-				ssuffix = "v"
+				ssuffix = self._config.static_data_ssuffix or "v"
 			},
 			body_g_object = Idstring("g_body")
 		}

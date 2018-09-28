@@ -1,8 +1,10 @@
 <table name="Characters Module">
-	<AssetUpdates id="23358" version="2" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
+	<AssetUpdates id="23358" version="3" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Hooks directory="Hooks">
-		<hook file="SelfUpdate.lua" source_file="lib/managers/menumanager"/>
 		<hook file="SyncCheck.lua" source_file="lib/network/base/networkpeer"/>
 		<hook file="FixOK.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
 	</Hooks>
+	<Modules directory="Modules">
+		<module file="CharactersModule.lua" name="CharactersModule" type_name="Characters"/>
+	</Modules>
 </table>
