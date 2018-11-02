@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<unit type="being" slot="2">
+	<object file="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player"/>
+	<dependencies>
+		<depends_on bnk="soundbanks/regular_vox" />
+	</dependencies>
+	<extensions>
+		<extension name="unit_data" class="ScriptUnitData" />
+		<extension name="base" class="PlayerBodyBoneMergeBase">
+			<var name="original_material" value="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player" />
+			<var name="contour_material" value="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player" />
+		</extension>
+		<extension name="contour" class="ContourExt"/>
+	</extensions>
+
+</unit>
