@@ -39,32 +39,43 @@ function CharactersModule:RegisterHook()
 			BeardLib:log("[ERROR] BlackMarketTweakData with id '%s' already exists!", self._config.id)
 			return
 		end
-		bmc_self.characters[self._config.id] = {
-			based_on = self._config.based_on,
-			custom = true,
-			fps_unit = self._config.fps_unit,
-			npc_unit = self._config.npc_unit,
-			menu_unit = self._config.menu_unit,
-			texture_bundle_folder = self._config.texture_bundle_folder,
-			sequence = self._config.sequence,
-			mask_on_sequence = self._config.mask_on_sequence,
-			mask_off_sequence = self._config.mask_off_sequence
-		}
-		bmc_self.characters["ai_"..self._config.id] = {
-			base_on = self._config.based_on,
-			custom = true,
-			npc_unit = self._config.ai_npc_unit,
-			sequence = self._config.sequence,
-			mask_on_sequence = self._config.mask_on_sequence,
-			mask_off_sequence = self._config.mask_off_sequence
-		}		
+		if type(bmc_self.characters[self._config.based_on]) ~= "table" then
+			bmc_self.characters[self._config.id] = {
+				fps_unit = "units/payday2/characters/fps_mover/fps_mover",
+				npc_unit = "units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1",
+				menu_unit = "units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1_menu",
+				name_id = "bm_character_locked",
+				sequence = "var_mtr_dallas",
+				mask_on_sequence = "mask_on",
+				mask_off_sequence = "mask_off"
+			}
+		else
+			bmc_self.characters[self._config.id] = deep_clone(bmc_self.characters[self._config.based_on])
+		end
+		bmc_self.characters[self._config.id].name_id = self._config.name_id
+		bmc_self.characters[self._config.id].desc_id = self._config.desc_id		
+		bmc_self.characters[self._config.id].based_on = self._config.based_on
+		bmc_self.characters[self._config.id].custom = true
+		bmc_self.characters[self._config.id].sequence = self._config.sequence
+		if self._config.mask_on_sequence then
+			bmc_self.characters[self._config.id].mask_on_sequence = self._config.mask_on_sequence
+		end
+		if self._config.mask_off_sequence then
+			bmc_self.characters[self._config.id].mask_off_sequence = self._config.mask_off_sequence
+		end
+		if self._config.texture_bundle_folder then
+			bmc_self.characters[self._config.id].texture_bundle_folder = self._config.texture_bundle_folder
+		end
+		
+		bmc_self.characters["ai_"..self._config.id] = deep_clone(bmc_self.characters[self._config.id])
+		
 		local _characters = table.size(tweak_data.criminals.characters) + 1
 		tweak_data.criminals.characters[_characters] = {
 			name = self._config.id,
 			order = _characters+1,
 			static_data = {
 				voice = self._config.static_data_voice or "",
-				ai_mask_id = self._config.id,
+				ai_mask_id = "dallas",
 				ai_character_id = "ai_"..self._config.id,
 				ssuffix = self._config.static_data_ssuffix or "v"
 			},
@@ -73,11 +84,7 @@ function CharactersModule:RegisterHook()
 		table.insert(tweak_data.criminals.character_names, self._config.id)
 	end)
 	Hooks:PostHook(EconomyTweakData, "init", self._config.id..Idstring("CharactersModuleEconomyTweakData"):key(), function(eco_self)
-		local orig = self._config.character_orig
-		local cc = self._config.character_cc
-		eco_self.armor_skins_configs[Idstring(orig):key()] = Idstring(cc)
-		eco_self.armor_skins_configs_map[Idstring(cc):key()] = Idstring(orig)	
-		eco_self.character_cc_configs.locke_player = Idstring(cc)
+		eco_self.character_cc_configs[self._config.id] = eco_self.character_cc_configs[self._config.based_on]
 	end)
 	Hooks:PostHook(GuiTweakData, "init", self._config.id..Idstring("CharactersModuleGuiTweakData"):key(), function(gui_self)
 		table.insert(gui_self.crime_net.codex[2], {

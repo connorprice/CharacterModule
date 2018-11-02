@@ -1,6 +1,18 @@
+function NetworkPeer:check_peer_preferred_character()
+	local free_characters = clone(CriminalsManager.character_names())
+	local peers_table = managers.network and managers.network:session() and managers.network:session():peers()
+	for _, peer in pairs(peers_table) do
+		local character = peer:character()
+		table.delete(free_characters, character)
+	end
+	return free_characters[math.random(#free_characters)]
+end
+
 function CharactersModuleSync_Fix(peer, d1, d2, d3, d4, d5, d6, d7, d8, d9, ...)
 	local _d1 = tostring(d1)
-	if _d1 == "sync_outfit" then
+	if _d1 == "set_unit" and tweak_data.blackmarket.characters[d3] and tweak_data.blackmarket.characters[d3].custom then
+		d3 = peer:check_peer_preferred_character()
+	elseif _d1 == "sync_outfit" then
 		local list = managers.blackmarket:unpack_outfit_from_string(d2)
 		local chara = tostring(list.character)
 		if not tweak_data.blackmarket.characters[chara] or tweak_data.blackmarket.characters[chara].custom then
@@ -19,7 +31,7 @@ function CharactersModuleSync_Fix(peer, d1, d2, d3, d4, d5, d6, d7, d8, d9, ...)
 					end
 				end
 			else
-				d4 = "bodhi"
+				d4 = peer:check_peer_preferred_character()
 			end
 		end
 	elseif _d1 == "join_request_reply" then
@@ -34,7 +46,7 @@ function CharactersModuleSync_Fix(peer, d1, d2, d3, d4, d5, d6, d7, d8, d9, ...)
 					end
 				end
 			else
-				d9 = "bodhi"
+				d9 = peer:check_peer_preferred_character()
 			end
 		end
 	end

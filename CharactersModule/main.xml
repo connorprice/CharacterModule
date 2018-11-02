@@ -1,8 +1,9 @@
 <table name="Characters Module">
-	<AssetUpdates id="23358" version="4" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
+	<AssetUpdates id="23358" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Hooks directory="Hooks">
 		<hook file="SyncCheck.lua" source_file="lib/network/base/networkpeer"/>
 		<hook file="FixOK.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
+		<hook file="Change.lua" source_file="lib/units/props/managespawnedunits"/>
 	</Hooks>
 	<Modules directory="Modules">
 		<module file="CharactersModule.lua" name="CharactersModule" type_name="Characters"/>
