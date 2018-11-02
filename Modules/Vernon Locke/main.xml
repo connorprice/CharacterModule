@@ -1,5 +1,5 @@
 <table name="Vernon Locke">
-	<AssetUpdates id="22099" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
+	<AssetUpdates id="22099" version="11" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
 	<Characters 
 			id="locke_player" 
