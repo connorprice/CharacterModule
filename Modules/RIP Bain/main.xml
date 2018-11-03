@@ -1,0 +1,55 @@
+<table name="RIP_Bain">
+	<!--
+	<AssetUpdates id="22099" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
+	-->
+	<Localization directory="Loc" default="EN.json"/>
+	<Characters 
+			id="rip_bain" 
+			based_on="bodhi" 
+			name_id="menu_rip_bain" 
+			desc_id="heist_contact_bain_description"
+			speech_prefix="rb13" 
+			weapon_voice="3" 
+			access="teamAI1"
+			default_mask="nyck_beret"
+			texture_bundle_folder="thermal_drill"
+			sequence="thermal_drill"
+			>
+	</Characters>
+	<ScriptMods>
+        <mod target_file="units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1" target_type="sequence_manager" merge_mode="script_merge">
+            <tbl>
+                <table search="unit" mode="insert">
+					<sequence editable="true" editable_state="false" name="'spawn_prop_bain_outfit'" triggable="true">
+						<function extension="'spawn_manager'" function="'spawn_and_link_unit_alt'" param1="'_char_joint_names'" param2="'char_mesh'" param3="'units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain'"/>
+						<set_variables var_body_replace="1"/>
+						<object enabled="false" name="'g_body'"/>
+						<object enabled="false" name="'g_hands'"/>
+						<object enabled="false" name="'g_head'"/>
+					</sequence>
+                </table>
+				<table search="unit" mode="insert">
+					<sequence editable="true" editable_state="false" name="'var_mtr_bain_cc'" triggable="true">
+						<run_sequence name="'spawn_prop_bain_outfit'"/>
+					</sequence>
+				</table>
+				<table search="unit" mode="insert">
+					<sequence editable="true" editable_state="false" name="'var_mtr_bain'" triggable="true">
+						<run_sequence name="'spawn_prop_bain_outfit'"/>
+					</sequence>
+				</table>
+            </tbl>
+        </mod>
+    </ScriptMods>
+	<Hooks directory="Hooks">
+		<hook file="networkmatchmakingsteam.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
+	</Hooks>
+	<AddFiles directory="Assets">
+		<unit path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
+		<object path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
+		<cooked_physics path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
+		<material_config path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
+		<model path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
+		<texture path="guis/dlcs/thermal_drill/textures/pd2/blackmarket/icons/characters/rip_bain" force="true"/>
+	</AddFiles>
+</table>
