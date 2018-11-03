@@ -1,7 +1,17 @@
 <table name="RIP_Bain">
 	<AssetUpdates id="23829" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
-	<Character
+	<Character id="rip_bain" based_on="bodhi" unit="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" default_mask="nyck_beret">
+		<character speech_prefix="rb13" weapon_voice="3"/>
+		<blackmarket name_id="menu_rip_bain" desc_id="heist_contact_bain_description" texture_bundle_folder="thermal_drill"/>
+		<gui name_id="menu_rip_bain" desc_id="heist_contact_bain_description" post_event="pln_contact_dallas">
+			<videos>
+				<value_node value="dallas1"/>
+				<value_node value="locke1"/>
+			</videos>
+		</gui>
+	</Character>
+	<!--<Character
 			id="rip_bain" 
 			based_on="bodhi" 
 			name_id="menu_rip_bain" 
@@ -41,7 +51,7 @@
     </ScriptMods>
 	<Hooks directory="Hooks">
 		<hook file="networkmatchmakingsteam.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
-	</Hooks>
+	</Hooks>-->
 	<AddFiles directory="Assets">
 		<unit path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
 		<object path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" force="true"/>
