@@ -3,7 +3,7 @@
 	<Hooks directory="Hooks">
 		<hook file="SyncCheck.lua" source_file="lib/network/base/networkpeer"/>
 		<hook file="FixOK.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
-		<hook file="Change.lua" source_file="lib/units/props/managespawnedunits"/>
+		<hook file="nosync_unitlinking.lua" source_file="lib/units/props/managespawnedunits"/>
 	</Hooks>
 	<Modules directory="Modules">
 		<module file="CharacterModule.lua" name="CharacterModule" type_name="Character"/>

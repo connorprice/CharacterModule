@@ -1,110 +1,205 @@
 CharacterModule = CharacterModule or class(ItemModuleBase)
 
-function CharacterModule:init(core_mod, config)
-	if not CharacterModule.super.init(self, core_mod, config) then
-		return false
-	end
-	return true
-end
-
 function CharacterModule:RegisterHook()
-	Hooks:PostHook(CharacterTweakData, "init", self._config.id..Idstring("CharacterModuleCharacterTweakDatainit"):key(), function(char_self)
+	-- Check for an id!
+	if not self._config.id then
+		BeardLib:log("[ERROR] Character Module missing 'id'!")
+	end
+
+	-- Setup Character Defaults
+	self._config.based_on = self._config.based_on or "russian"
+	self._config.default_mask = self._config.default_mask or "dallas"
+
+	self._config.character = self._config.character or {}
+	self._config.blackmarket = self._config.blackmarket or {}
+	self._config.gui = self._config.gui or {}
+
+	self._config.blackmarket.name_id = self._config.blackmarket.name_id or "menu_" .. self._config.id
+	self._config.blackmarket.desc_id = self._config.blackmarket.desc_id or self._config.desc_id .. "_desc" 
+	self._config.blackmarket.sequence = self._config.blackmarket.sequence or "var_mtr_" .. self._config.id
+
+	self._config.gui.name_id = self._config.gui.name_id or self._config.blackmarket.name_id
+	self._config.gui.desc_id = self._config.gui.desc_id or self._config.blackmarket.desc_id
+
+	-- Add Character Tweak Data
+	Hooks:PostHook( CharacterTweakData, "init", self._config.id .. "AddCharacterTweakData", function( char_self )
 		if char_self[self._config.id] then
 			BeardLib:log("[ERROR] CharacterTweakData with id '%s' already exists!", self._config.id)
 			return
 		end
-		local presets = char_self.presets
-		char_self[self._config.id] = {
-			damage = presets.gang_member_damage,
-			weapon = deep_clone(presets.weapon.gang_member)
-		}
-		char_self[self._config.id].weapon.weapons_of_choice = {
-			primary = "wpn_fps_ass_m4_npc",
-			secondary = Idstring("units/payday2/weapons/wpn_npc_c45/wpn_npc_c45")
-		}
-		char_self[self._config.id].detection = presets.detection.gang_member
-		char_self[self._config.id].move_speed = presets.move_speed.very_fast
-		char_self[self._config.id].crouch_move = false
-		char_self[self._config.id].speech_prefix = self._config.speech_prefix
-		char_self[self._config.id].weapon_voice = self._config.weapon_voice
-		char_self[self._config.id].access = self._config.access
-		char_self[self._config.id].arrest = {
-			timeout = 240,
-			aggression_timeout = 6,
-			arrest_timeout = 240
-		}
+
+		local data = table.merge( deep_clone( char_self[self._config.based_on] ), self._config.character )
+		char_self[self._config.id] = data
 	end)
-	Hooks:PostHook(BlackMarketTweakData, "_init_characters", self._config.id..Idstring("CharacterModuleBlackMarketTweakData_init_characters"):key(), function(bmc_self, tweak_data)
+
+	-- Add Criminal Tweak Data
+	local function SetupCriminalTweakData( tweak_data )  
+		local function GetCriminalBasedOnData( based_on )
+			for index, data in pairs( tweak_data.criminals.characters ) do
+				if data.name == based_on then
+					return deep_clone( data )
+				end
+			end
+		end
+
+		local criminal_based_on = self._config.based_on
+		local criminal_based_on_data = GetCriminalBasedOnData( criminal_based_on )
+
+		local _characters = table.size(tweak_data.criminals.characters)
+
+		criminal_based_on_data.name = self._config.id
+		criminal_based_on_data.order = _characters + 1
+
+		criminal_based_on_data.static_data.voice = self._config.character.speech_prefix or criminal_based_on_data.static_data.voice
+		criminal_based_on_data.static_data.ai_mask_id = self._config.id
+		criminal_based_on_data.static_data.ai_character_id = "ai_" .. self._config.id
+		
+		tweak_data.criminals.characters[_characters + 1] = criminal_based_on_data
+
+		table.insert(tweak_data.criminals.character_names, self._config.id)
+	end
+
+	-- Extra Helper Function
+	local function ConvertOldToNewCharacterName( name )
+		local t = {
+			spanish = "chains",
+			russian = "dallas",
+			german = "wolf",
+			american = "hoxton"
+		}
+
+		return t[name] or name
+	end
+
+	-- Add Black Market Tweak Data
+	Hooks:PostHook( BlackMarketTweakData, "_init_characters", self._config.id .. "AddCharacterBlackMarketTweakData", function( bmc_self, tweak_data )
 		if bmc_self.characters[self._config.id] then
 			BeardLib:log("[ERROR] BlackMarketTweakData with id '%s' already exists!", self._config.id)
 			return
 		end
-		if type(bmc_self.characters[self._config.based_on]) ~= "table" then
-			bmc_self.characters[self._config.id] = {
-				fps_unit = "units/payday2/characters/fps_mover/fps_mover",
-				npc_unit = "units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1",
-				menu_unit = "units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1_menu",
-				name_id = "bm_character_locked",
-				sequence = "var_mtr_dallas",
-				mask_on_sequence = "mask_on",
-				mask_off_sequence = "mask_off"
-			}
+
+		local based_on = ConvertOldToNewCharacterName( self._config.based_on )
+		local based_on_data = nil
+
+		if bmc_self.characters.locked[based_on] then
+			based_on_data = table.merge( deep_clone( bmc_self.characters.locked ), bmc_self.characters.locked[based_on] )
 		else
-			bmc_self.characters[self._config.id] = deep_clone(bmc_self.characters[self._config.based_on])
+			based_on_data = deep_clone( bmc_self.characters[based_on] )
 		end
-		bmc_self.characters[self._config.id].name_id = self._config.name_id
-		bmc_self.characters[self._config.id].desc_id = self._config.desc_id		
+
+		local data = table.merge( based_on_data, self._config.blackmarket )
+		bmc_self.characters[self._config.id] = data
 		bmc_self.characters[self._config.id].based_on = self._config.based_on
-		bmc_self.characters[self._config.id].custom = true
-		bmc_self.characters[self._config.id].sequence = self._config.sequence
-		if self._config.mask_on_sequence then
-			bmc_self.characters[self._config.id].mask_on_sequence = self._config.mask_on_sequence
-		end
-		if self._config.mask_off_sequence then
-			bmc_self.characters[self._config.id].mask_off_sequence = self._config.mask_off_sequence
-		end
-		if self._config.texture_bundle_folder then
-			bmc_self.characters[self._config.id].texture_bundle_folder = self._config.texture_bundle_folder
-		end
+
+		-- Store this for our auto sequence generation.
+		self._config.blackmarket.npc_unit = data.npc_unit
 		
-		bmc_self.characters["ai_"..self._config.id] = deep_clone(bmc_self.characters[self._config.id])
-		
-		local _characters = table.size(tweak_data.criminals.characters) + 1
-		tweak_data.criminals.characters[_characters] = {
-			name = self._config.id,
-			order = _characters+1,
-			static_data = {
-				voice = self._config.static_data_voice or "",
-				ai_mask_id = "dallas",
-				ai_character_id = "ai_"..self._config.id,
-				ssuffix = self._config.static_data_ssuffix or "v"
-			},
-			body_g_object = Idstring("g_body")
-		}
-		table.insert(tweak_data.criminals.character_names, self._config.id)
+		local ai_based_on = "ai_" .. based_on
+		local ai_based_on_data = deep_clone( bmc_self.characters[ai_based_on] )
+
+		local ai_data = table.merge( ai_based_on_data, self._config.blackmarket )
+		bmc_self.characters["ai_".. self._config.id] = ai_data
+
+		SetupCriminalTweakData( tweak_data )
 	end)
-	Hooks:PostHook(EconomyTweakData, "init", self._config.id..Idstring("CharacterModuleEconomyTweakData"):key(), function(eco_self)
+	-- Add Economy Tweak Data
+	Hooks:PostHook( EconomyTweakData, "init", self._config.id .. "AddCharacterEconomyTweakData", function( eco_self )
 		eco_self.character_cc_configs[self._config.id] = eco_self.character_cc_configs[self._config.based_on]
 	end)
-	Hooks:PostHook(GuiTweakData, "init", self._config.id..Idstring("CharacterModuleGuiTweakData"):key(), function(gui_self)
-		table.insert(gui_self.crime_net.codex[2], {
-			{
-				desc_id = self._config.desc_id,
-				post_event = "loc_quote_set_a",
-				videos = {"locke1"}
-			},
-			name_id = self._config.name_id,
-			id = self._config.id
-		})
+
+	Hooks:PostHook(GuiTweakData, "init", self._config.id .. "AddCharacterGuiTweakData", function(gui_self)
+		local function GetGuiBasedOnData( based_on )
+			for index, data in pairs( gui_self.crime_net.codex[2] ) do
+				if data.id == based_on then
+					return deep_clone( data )
+				end
+			end
+		end
+
+		local based_on = ConvertOldToNewCharacterName( self._config.based_on )
+		local based_on_data = GetGuiBasedOnData( based_on )
+
+		based_on_data.id = self._config.id
+		based_on_data.name_id = self._config.gui.name_id
+		based_on_data[1].desc_id = self._config.gui.desc_id
+		based_on_data[1].post_event = self._config.gui.post_event or based_on_data[1].post_event
+		based_on_data[1].videos = self._config.gui.videos or based_on_data[1].videos
+
+		table.insert( gui_self.crime_net.codex[2], based_on_data )
 	end)
-	Hooks:PostHook(BlackMarketTweakData, "_init_masks", self._config.id..Idstring("CharacterModuleBlackMarketTweakData_init_masks"):key(), function(bmm_self)
+
+	-- Add Mask Tweak Data
+	Hooks:PostHook( BlackMarketTweakData, "_init_masks", self._config.id .. "AddCharacterMaskTweakData", function( bmm_self )
 		bmm_self.masks.character_locked[self._config.id] = self._config.default_mask
+
 		for mask_id, mask_data in pairs(bmm_self.masks) do
-			for type_id in pairs({"characters", "offsets"}) do
+			for type_id in pairs( {"characters", "offsets"} ) do
 				if mask_data[type_id] and mask_data[type_id][self._config.id] then
-					bmm_self.masks[mask_id][type_id][self._config.id] = deep_clone(mask_data[type_id][self._config.id])
+					bmm_self.masks[mask_id][type_id][self._config.id] = deep_clone( mask_data[type_id][self._config.id] )
 				end
 			end
 		end
 	end)
+
+	if self._config.unit then
+		-- Automatically Generate Sequence
+		Hooks:AddHook( "BeardLibProcessScriptData", "AddArmorScriptData", function( ids_ext, ids_path, data )
+			if ids_ext == Idstring("sequence_manager") then
+				if ids_path == Idstring(self._config.blackmarket.npc_unit) then
+					local sequence = {
+						_meta = "sequence",
+						editable_state = "true",
+						name = "'" .. self._config.blackmarket.sequence .. "'",
+						triggable = "true",
+						{
+							_meta = "function",
+							extension = "'spawn_manager'",
+							["function"] = "'spawn_and_link_unit_nosync'",
+							param1 = "'_char_joint_names'",
+							param2 = "'custom_char_mesh'",
+							param3 = "'" .. self._config.unit .. "'"
+						}
+					}
+
+					if self._config.extra_units then
+						for index, unit in pairs(self._config.extra_units) do
+							local extra_unit = {
+								_meta = "function",
+								extension = "'spawn_manager'",
+								["function"] = "'spawn_and_link_unit_nosync'",
+								param1 = "'_char_joint_names'",
+								param2 = "'custom_char_mesh_" .. index .. "'",
+								param3 = "'" .. unit .. "'"
+							}
+
+							table.insert( sequence, extra_unit )
+						end
+					end
+
+					local objects_to_hide = {
+						"g_body",
+						"g_body_jacket",
+						"g_hands",
+						"g_body_jiro",
+						"g_body_bodhi",
+						"g_body_jimmy",
+						"g_body_terry",
+						"g_body_myh"
+					}
+
+					for index, object_name in pairs( objects_to_hide ) do
+						local object_hider = {
+							_meta = "object",
+							enabled = "false",
+							name = "'" .. object_name .. "'"
+						}
+
+						table.insert( sequence, object_hider )
+					end
+
+					table.insert( data[1], sequence )
+				end
+			end
+		end )
+	end
 end
