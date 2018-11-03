@@ -1,7 +1,7 @@
 <table name="Vernon Locke">
 	<AssetUpdates id="22099" version="11" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
-	<Characters 
+	<Character 
 			id="locke_player" 
 			based_on="bodhi" 
 			name_id="menu_locke_player" 
@@ -13,7 +13,7 @@
 			texture_bundle_folder="fo_sho"
 			sequence="var_mtr_locke"
 			>
-	</Characters>
+	</Character>
 	<ScriptMods>
         <mod target_file="units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1" target_type="sequence_manager" merge_mode="script_merge">
             <tbl>

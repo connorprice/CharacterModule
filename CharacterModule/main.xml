@@ -1,4 +1,4 @@
-<table name="Characters Module" priority="999">
+<table name="Character Module" priority="999">
 	<AssetUpdates id="23358" version="11" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Hooks directory="Hooks">
 		<hook file="SyncCheck.lua" source_file="lib/network/base/networkpeer"/>
@@ -6,6 +6,6 @@
 		<hook file="Change.lua" source_file="lib/units/props/managespawnedunits"/>
 	</Hooks>
 	<Modules directory="Modules">
-		<module file="CharactersModule.lua" name="CharactersModule" type_name="Characters"/>
+		<module file="CharacterModule.lua" name="CharacterModule" type_name="Character"/>
 	</Modules>
 </table>

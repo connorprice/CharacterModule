@@ -1,14 +1,14 @@
-CharactersModule = CharactersModule or class(ItemModuleBase)
+CharacterModule = CharacterModule or class(ItemModuleBase)
 
-function CharactersModule:init(core_mod, config)
-	if not CharactersModule.super.init(self, core_mod, config) then
+function CharacterModule:init(core_mod, config)
+	if not CharacterModule.super.init(self, core_mod, config) then
 		return false
 	end
 	return true
 end
 
-function CharactersModule:RegisterHook()
-	Hooks:PostHook(CharacterTweakData, "init", self._config.id..Idstring("CharactersModuleCharacterTweakDatainit"):key(), function(char_self)
+function CharacterModule:RegisterHook()
+	Hooks:PostHook(CharacterTweakData, "init", self._config.id..Idstring("CharacterModuleCharacterTweakDatainit"):key(), function(char_self)
 		if char_self[self._config.id] then
 			BeardLib:log("[ERROR] CharacterTweakData with id '%s' already exists!", self._config.id)
 			return
@@ -34,7 +34,7 @@ function CharactersModule:RegisterHook()
 			arrest_timeout = 240
 		}
 	end)
-	Hooks:PostHook(BlackMarketTweakData, "_init_characters", self._config.id..Idstring("CharactersModuleBlackMarketTweakData_init_characters"):key(), function(bmc_self, tweak_data)
+	Hooks:PostHook(BlackMarketTweakData, "_init_characters", self._config.id..Idstring("CharacterModuleBlackMarketTweakData_init_characters"):key(), function(bmc_self, tweak_data)
 		if bmc_self.characters[self._config.id] then
 			BeardLib:log("[ERROR] BlackMarketTweakData with id '%s' already exists!", self._config.id)
 			return
@@ -83,10 +83,10 @@ function CharactersModule:RegisterHook()
 		}
 		table.insert(tweak_data.criminals.character_names, self._config.id)
 	end)
-	Hooks:PostHook(EconomyTweakData, "init", self._config.id..Idstring("CharactersModuleEconomyTweakData"):key(), function(eco_self)
+	Hooks:PostHook(EconomyTweakData, "init", self._config.id..Idstring("CharacterModuleEconomyTweakData"):key(), function(eco_self)
 		eco_self.character_cc_configs[self._config.id] = eco_self.character_cc_configs[self._config.based_on]
 	end)
-	Hooks:PostHook(GuiTweakData, "init", self._config.id..Idstring("CharactersModuleGuiTweakData"):key(), function(gui_self)
+	Hooks:PostHook(GuiTweakData, "init", self._config.id..Idstring("CharacterModuleGuiTweakData"):key(), function(gui_self)
 		table.insert(gui_self.crime_net.codex[2], {
 			{
 				desc_id = self._config.desc_id,
@@ -97,7 +97,7 @@ function CharactersModule:RegisterHook()
 			id = self._config.id
 		})
 	end)
-	Hooks:PostHook(BlackMarketTweakData, "_init_masks", self._config.id..Idstring("CharactersModuleBlackMarketTweakData_init_masks"):key(), function(bmm_self)
+	Hooks:PostHook(BlackMarketTweakData, "_init_masks", self._config.id..Idstring("CharacterModuleBlackMarketTweakData_init_masks"):key(), function(bmm_self)
 		bmm_self.masks.character_locked[self._config.id] = self._config.default_mask
 		for mask_id, mask_data in pairs(bmm_self.masks) do
 			for type_id in pairs({"characters", "offsets"}) do

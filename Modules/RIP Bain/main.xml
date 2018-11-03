@@ -1,7 +1,7 @@
 <table name="RIP_Bain">
 	<AssetUpdates id="23829" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
-	<Characters 
+	<Character
 			id="rip_bain" 
 			based_on="bodhi" 
 			name_id="menu_rip_bain" 
@@ -13,7 +13,7 @@
 			texture_bundle_folder="thermal_drill"
 			sequence="var_mtr_bain"
 			>
-	</Characters>
+	</Character>
 	<ScriptMods>
         <mod target_file="units/payday2/characters/npc_criminals_suit_1/npc_criminals_suit_1" target_type="sequence_manager" merge_mode="script_merge">
             <tbl>
