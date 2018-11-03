@@ -1,7 +1,5 @@
 <table name="RIP_Bain">
-	<!--
-	<AssetUpdates id="22099" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
-	-->
+	<AssetUpdates id="23829" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
 	<Characters 
 			id="rip_bain" 
@@ -13,7 +11,7 @@
 			access="teamAI1"
 			default_mask="nyck_beret"
 			texture_bundle_folder="thermal_drill"
-			sequence="thermal_drill"
+			sequence="var_mtr_bain"
 			>
 	</Characters>
 	<ScriptMods>
