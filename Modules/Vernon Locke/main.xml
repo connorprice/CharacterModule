@@ -49,7 +49,6 @@
 		<cooked_physics path="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player" force="true"/>
 		<material_config path="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player" force="true"/>
 		<model path="units/pd2_dlc_fo_sho/characters/npc_criminals_fo_sho/npc_criminal_locke_player" force="true"/>
-
 		<texture path="guis/dlcs/fo_sho/textures/pd2/blackmarket/icons/characters/locke_player" force="true"/>
 	</AddFiles>
 </table>
