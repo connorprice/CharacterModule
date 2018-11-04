@@ -1,25 +1,5 @@
 CharacterModule = CharacterModule or class(ItemModuleBase)
 
-function table.fancy_print(data, t)
-	if type(data) == "table" then
-		t = t or ""
-
-		for k, v in pairs(data) do
-			if type(v) ~= "userdata" then
-				log("debug", t .. tostring(k) .. "=" .. tostring(v))
-			else
-				log("debug", t .. tostring(k) .. "=" .. CoreClass.type_name(v))
-			end
-
-			if type(v) == "table" then
-				table.fancy_print(v, t .. "\t")
-			end
-		end
-	else
-		log("debug", CoreClass.type_name(data), tostring(data))
-	end
-end
-
 function CharacterModule:RegisterHook()
 	-- Check for an id!
 	if not self._config.id then
@@ -125,6 +105,7 @@ function CharacterModule:RegisterHook()
 		local data = table.merge( based_on_data, self._config.blackmarket )
 		bmc_self.characters[self._config.id] = data
 		bmc_self.characters[self._config.id].based_on = self._config.based_on
+		bmc_self.characters[self._config.id].custom = true
 
 		-- Store this for our auto sequence generation.
 		self._config.blackmarket.npc_unit = data.npc_unit
