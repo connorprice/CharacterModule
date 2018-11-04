@@ -10,6 +10,9 @@
 			<var name="original_material" value="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" />
 			<var name="contour_material" value="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" />
 		</extension>
+		<extension name="damage" class="UnitDamage" >
+			<var name="_skip_save_anim_state_machine" value="true" />
+		</extension>
 		<extension name="contour" class="ContourExt"/>
 	</extensions>
 

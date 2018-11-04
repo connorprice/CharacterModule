@@ -4,6 +4,7 @@
 		<hook file="SyncCheck.lua" source_file="lib/network/base/networkpeer"/>
 		<hook file="FixOK.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
 		<hook file="nosync_unitlinking.lua" source_file="lib/units/props/managespawnedunits"/>
+		<hook file="sequence_passthrough.lua" source_file="core/lib/units/coreunitdamage"/>
 	</Hooks>
 	<Modules directory="Modules">
 		<module file="CharacterModule.lua" name="CharacterModule" type_name="Character"/>
