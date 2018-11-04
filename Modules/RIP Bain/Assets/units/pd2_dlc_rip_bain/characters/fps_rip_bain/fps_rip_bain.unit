@@ -1,11 +1,11 @@
 <?xml version="1.0"?>
 <unit type="being" slot="2">
-	<object file="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
+	<object file="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
 	<extensions>
 		<extension name="unit_data" class="ScriptUnitData" />
 		<extension name="base" class="PlayerBodyBoneMergeBase"/>
 		<extension name="damage" class="UnitDamage">
-			<var name="_skip_save_anim_state_machine" value="true"/>
+			<var name="_skip_save_anim_state_machine" value="true" />
 		</extension>
 		<extension name="contour" class="ContourExt"/>
 	</extensions>

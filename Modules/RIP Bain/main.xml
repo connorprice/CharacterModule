@@ -1,8 +1,8 @@
 <table name="RIP_Bain">
 	<AssetUpdates id="23829" version="10" provider="modworkshop" use_local_dir="true" use_local_path="true"/>
 	<Localization directory="Loc" default="EN.json"/>
-	<Character id="rip_bain" based_on="bodhi" unit="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" default_mask="nyck_beret">
-		<character speech_prefix="rb13"/>
+	<Character id="rip_bain" based_on="bodhi" unit="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain" fps_unit="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain" default_mask="nyck_beret">
+		<character speech_prefix="rb_bain"/>
 		<blackmarket desc_id="heist_contact_bain_description" texture_bundle_folder="thermal_drill"/>
 		<gui post_event="pln_contact_bain">
 			<videos>
@@ -11,9 +11,11 @@
 		</gui>
 		<masks x="0" y="-1.7" z="1.5"/>
 	</Character>
+
 	<Hooks directory="Hooks">
 		<hook file="networkmatchmakingsteam.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
 	</Hooks>
+	
 	<AddFiles directory="Assets">
 		<unit path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
 		<object path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
@@ -21,6 +23,19 @@
 		<cooked_physics path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
 		<material_config path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
 		<model path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
+
+		<unit path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+		<object path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+		<sequence_manager path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+		<cooked_physics path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+		<material_config path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+		<model path="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain"/>
+
 		<texture path="guis/dlcs/thermal_drill/textures/pd2/blackmarket/icons/characters/rip_bain"/>
 	</AddFiles>
+
+	<Sounds directory="Assets" prefix="rb_bain">
+		<sound id="g32x_any" path="sounds/rip_bain/shit.ogg"/>
+		<sound id="s12" path="sounds/rip_bain/tihs.ogg"/>
+	</Sounds>
 </table>

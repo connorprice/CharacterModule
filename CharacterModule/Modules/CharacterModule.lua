@@ -192,11 +192,11 @@ function CharacterModule:RegisterHook()
 		end
 	end)
 
-	if self._config.unit then
-		-- Automatically Generate Sequence
-		Hooks:AddHook( "BeardLibProcessScriptData", "AddArmorScriptData", function( ids_ext, ids_path, data )
-			if ids_ext == Idstring("sequence_manager") then
-				if ids_path == Idstring(self._config.blackmarket.npc_unit) then
+	-- Automatically Generate Sequence
+	Hooks:AddHook( "BeardLibProcessScriptData", "AddArmorScriptData", function( ids_ext, ids_path, data )
+		if ids_ext == Idstring("sequence_manager") then
+			if ids_path == Idstring(self._config.blackmarket.npc_unit) then
+				if self._config.unit then
 					local sequence = {
 						_meta = "sequence",
 						editable_state = "true",
@@ -276,8 +276,70 @@ function CharacterModule:RegisterHook()
 						end
 					end
 				end
+			elseif ids_path == Idstring("units/payday2/characters/fps_criminals_suit_1/fps_criminals_suit_1") then
+				if self._config.fps_unit or self._config.unit then
+					local sequence = {
+						_meta = "sequence",
+						editable_state = "true",
+						name = "'" .. self._config.blackmarket.sequence .. "'",
+						triggable = "true",
+						{
+							_meta = "function",
+							extension = "'spawn_manager'",
+							["function"] = "'spawn_and_link_unit_nosync'",
+							param1 = "'_char_joint_names'",
+							param2 = "'custom_char_mesh'",
+							param3 = "'" .. (self._config.fps_unit or self._config.unit) .. "'"
+						}
+					}
+
+					if self._config.extra_fps_units or self._config.extra_units then
+						for index, unit in pairs(self._config.extra_fps_units or self._config.extra_units) do
+							local extra_unit = {
+								_meta = "function",
+								extension = "'spawn_manager'",
+								["function"] = "'spawn_and_link_unit_nosync'",
+								param1 = "'_char_joint_names'",
+								param2 = "'custom_char_mesh_" .. index .. "'",
+								param3 = "'" .. unit .. "'"
+							}
+
+							table.insert( sequence, extra_unit )
+						end
+					end
+
+					local objects_to_hide = {
+						"g_body",
+						"g_body_jacket",
+						"g_hands",
+						"g_body_jiro",
+						"g_body_bodhi",
+						"g_body_jimmy",
+						"g_body_terry",
+						"g_body_myh"
+					}
+
+					for index, object_name in pairs( objects_to_hide ) do
+						local object_hider = {
+							_meta = "object",
+							enabled = "false",
+							name = "'" .. object_name .. "'"
+						}
+
+						table.insert( sequence, object_hider )
+					end
+
+					table.insert( data[1], sequence )
+
+					-- Scrub and tux stuff because they are unique inbetween heisters even with this annoying single model one!
+					for seq_index, filter in pairs(data[1]) do
+						if filter.name == "'is_" .. self._config.based_on .. "'" then
+							filter[1].value = filter[1].value .. " or (dest_unit:parent() or dest_unit):base():character_name() == '" .. self._config.id .. "'"
+						end
+					end
+				end
 			end
-		end )
-	end
+		end
+	end )
 
 end

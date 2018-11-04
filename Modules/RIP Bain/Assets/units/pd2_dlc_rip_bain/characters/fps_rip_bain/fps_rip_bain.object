@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<dynamic_object>
+	<diesel materials="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain" orientation_object="root_point" />
+	<sequence_manager file="units/pd2_dlc_rip_bain/characters/fps_rip_bain/fps_rip_bain" />
+	<decal_surfaces default_material="flesh" />
+	<graphics>
+		<graphic_group name="character" enabled="true" culling_object="g_body">
+			<object name="g_body_lod0" enabled="true"/>
+			<object name="g_trim" enabled="true"/>
+		</graphic_group>
+	</graphics>
+</dynamic_object>
