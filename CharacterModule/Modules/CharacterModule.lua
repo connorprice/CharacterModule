@@ -164,7 +164,7 @@ function CharacterModule:RegisterHook()
 			end
 
 			if based_on_offset then
-				mask_data.offsets[self._config.id] = deep_clone(mask_data.offsets[self._config.based_on])
+				mask_data.offsets[self._config.id] = clone( mask_data.offsets[self._config.based_on] )
 				mask_data.offsets[self._config.id][1] = offset
 			else
 				mask_data.offsets[self._config.id] = { offset, Rotation( 0, 0, 0 ) }
