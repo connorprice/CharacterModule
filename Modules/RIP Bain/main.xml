@@ -11,10 +11,6 @@
 		</gui>
 		<masks x="0" y="-1.7" z="1.5"/>
 	</Character>
-
-	<Hooks directory="Hooks">
-		<hook file="networkmatchmakingsteam.lua" source_file="lib/network/matchmaking/networkmatchmakingsteam"/>
-	</Hooks>
 	
 	<AddFiles directory="Assets">
 		<unit path="units/pd2_dlc_rip_bain/characters/npc_rip_bain/npc_rip_bain"/>
