@@ -193,7 +193,7 @@ function CharacterModule:RegisterHook()
 	end)
 
 	-- Automatically Generate Sequence
-	Hooks:AddHook( "BeardLibProcessScriptData", "AddArmorScriptData", function( ids_ext, ids_path, data )
+	Hooks:AddHook( "BeardLibProcessScriptData", self._config.id .. "AddCharacterScriptData", function( ids_ext, ids_path, data )
 		if ids_ext == Idstring("sequence_manager") then
 			if ids_path == Idstring(self._config.blackmarket.npc_unit) then
 				if self._config.unit then
@@ -203,49 +203,69 @@ function CharacterModule:RegisterHook()
 						name = "'" .. self._config.blackmarket.sequence .. "'",
 						triggable = "true",
 						{
+							_meta = "run_sequence",
+							name = "'int_seq_hide_all'"
+						},
+						{
 							_meta = "function",
 							extension = "'spawn_manager'",
-							["function"] = "'spawn_and_link_unit_nosync'",
+							["function"] = "'spawn_and_link_unit_nosync_load'",
 							param1 = "'_char_joint_names'",
 							param2 = "'custom_char_mesh'",
 							param3 = "'" .. self._config.unit .. "'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_1'",
+							name = "'var_model_01'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_2'",
+							name = "'var_model_02'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_3'",
+							name = "'var_model_03'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_4'",
+							name = "'var_model_04'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_5'",
+							name = "'var_model_05'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_6'",
+							name = "'var_model_06'"
+						},
+						{
+							_meta = "run_sequence",
+							filter = "'armor_state_7'",
+							name = "'var_model_07'"
 						}
 					}
 
 					if self._config.extra_units then
 						for index, unit in pairs(self._config.extra_units) do
-							local extra_unit = {
-								_meta = "function",
-								extension = "'spawn_manager'",
-								["function"] = "'spawn_and_link_unit_nosync'",
-								param1 = "'_char_joint_names'",
-								param2 = "'custom_char_mesh_" .. index .. "'",
-								param3 = "'" .. unit .. "'"
-							}
+							if type(index) == "number" then
+								local extra_unit = {
+									_meta = "function",
+									extension = "'spawn_manager'",
+									["function"] = "'spawn_and_link_unit_nosync_load'",
+									param1 = "'_char_joint_names'",
+									param2 = "'custom_char_mesh_" .. tostring(index) .. "'",
+									param3 = "'" .. unit .. "'"
+								}
 
-							table.insert( sequence, extra_unit )
+								table.insert( sequence, extra_unit )
+							end
 						end
-					end
-
-					local objects_to_hide = {
-						"g_body",
-						"g_body_jacket",
-						"g_hands",
-						"g_body_jiro",
-						"g_body_bodhi",
-						"g_body_jimmy",
-						"g_body_terry",
-						"g_body_myh"
-					}
-
-					for index, object_name in pairs( objects_to_hide ) do
-						local object_hider = {
-							_meta = "object",
-							enabled = "false",
-							name = "'" .. object_name .. "'"
-						}
-
-						table.insert( sequence, object_hider )
 					end
 
 					table.insert( data[1], sequence )
@@ -286,25 +306,27 @@ function CharacterModule:RegisterHook()
 						{
 							_meta = "function",
 							extension = "'spawn_manager'",
-							["function"] = "'spawn_and_link_unit_nosync'",
+							["function"] = "'spawn_and_link_unit_nosync_load'",
 							param1 = "'_char_joint_names'",
 							param2 = "'custom_char_mesh'",
 							param3 = "'" .. (self._config.fps_unit or self._config.unit) .. "'"
 						}
 					}
 
-					if self._config.extra_fps_units or self._config.extra_units then
-						for index, unit in pairs(self._config.extra_fps_units or self._config.extra_units) do
-							local extra_unit = {
-								_meta = "function",
-								extension = "'spawn_manager'",
-								["function"] = "'spawn_and_link_unit_nosync'",
-								param1 = "'_char_joint_names'",
-								param2 = "'custom_char_mesh_" .. index .. "'",
-								param3 = "'" .. unit .. "'"
-							}
+					if self._config.extra_fps_units then
+						if type(index) == "number" then
+							for index, unit in pairs(self._config.extra_fps_units) do
+								local extra_unit = {
+									_meta = "function",
+									extension = "'spawn_manager'",
+									["function"] = "'spawn_and_link_unit_nosync_load'",
+									param1 = "'_char_joint_names'",
+									param2 = "'custom_char_mesh_" .. index .. "'",
+									param3 = "'" .. unit .. "'"
+								}
 
-							table.insert( sequence, extra_unit )
+								table.insert( sequence, extra_unit )
+							end
 						end
 					end
 

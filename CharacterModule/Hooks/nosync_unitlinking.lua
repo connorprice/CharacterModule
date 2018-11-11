@@ -52,6 +52,14 @@ function ManageSpawnedUnits:spawn_and_link_unit_nosync(joint_table, unit_id, uni
 	self:_link_joints(unit_id, joint_table)
 end
 
+function ManageSpawnedUnits:spawn_and_link_unit_nosync_load(joint_table, unit_id, unit)
+	if not managers.dyn_resource then return end
+	managers.dyn_resource:load(Idstring("unit"), Idstring(unit), DynamicResourceManager.DYN_RESOURCES_PACKAGE, false)
+
+	self:spawn_and_link_unit_nosync( joint_table, unit_id, unit )
+end
+
+
 function ManageSpawnedUnits:remove_unit_nosync(unit_id)
 	local entry = self._spawned_units[unit_id]
 	if entry then
