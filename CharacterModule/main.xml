@@ -4,9 +4,6 @@
 		<hook file="character_sync.lua" source_file="lib/network/base/networkpeer"/>
 		<hook file="nosync_unitlinking.lua" source_file="lib/units/props/managespawnedunits"/>
 		<hook file="sequence_passthrough.lua" source_file="core/lib/units/coreunitdamage"/>
-
-		<hook file="load_character_units.lua" source_file="lib/units/menu/menuarmourbase"/>
-		<hook file="load_character_units.lua" source_file="lib/units/beings/player/playermovement"/>
 	</Hooks>
 	<Modules directory="modules">
 		<module file="CharacterModule.lua" name="CharacterModule" type_name="Character"/>
